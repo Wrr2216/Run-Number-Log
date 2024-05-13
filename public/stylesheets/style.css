@@ -1,0 +1,202 @@
+/*
+ * Copyright (c) 2024 Logan Miller
+ * All rights reserved.
+ *
+ * This code is the property of Miller Cyber Technologies LLC.
+ * Unauthorized use or distribution of this code is strictly prohibited.
+ */
+
+/* Overall design colors */
+body {
+  background-color: #ffffff; /* Background color for the body */
+  color: #333; /* Text color */
+}
+
+.container {
+  background-color: #ffffff; /* Background color for the container */
+  border-radius: 5px; /* Border radius for the container */
+  padding: 20px; /* Padding for the container */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for the container */
+  max-width: 1200px;
+}
+
+h1 {
+  color: #1565ba; /* Header color */
+  text-align: center; /* Center-align the text */
+  margin-top: 20px; /* Add some top margin for spacing */
+  font-size: 2em; /* Adjust the font size */
+  font-weight: bold; /* Make the text bold */
+}
+
+.btn-primary,
+.btn-danger,
+.btn-export {
+  margin-bottom: 10px; /* Add margin to the bottom of buttons */
+}
+
+.btn-primary,
+.btn-danger,
+.btn-export,
+.btn-primary:hover,
+.btn-danger:hover,
+.btn-export:hover {
+  width: 100%; /* Ensure buttons take up full width */
+}
+
+.btn-primary,
+.btn-danger,
+.btn-export {
+  max-width: 200px; /* Limit maximum width of buttons */
+}
+
+.btn-primary:hover,
+.btn-danger:hover,
+.btn-export:hover {
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Fluid and streamlined table style */
+.table {
+  font-size: 12px; /* Font size for table content */
+  color: #333; /* Text color */
+  border-collapse: collapse; /* Collapse table borders */
+  width: 100%; /* Table width */
+  margin-bottom: 1rem; /* Margin at the bottom of the table */
+  margin-top: 1rem;
+  table-layout: fixed;
+  
+}
+
+/* Style table header */
+.table th {
+  background-color: #007bff; /* Header background color */
+  color: #fff; /* Header text color */
+  font-weight: bold; /* Bold font weight for headers */
+  padding: 10px; /* Padding for header cells */
+  text-align: left; /* Align header text to the left */
+}
+
+/* Style table body */
+.table td {
+  border: none; /* Remove border for table cells */
+  border-bottom: 1px solid #dee2e6; /* Add bottom border for cells */
+  padding: 10px; /* Padding for table cells */
+  text-align: left; /* Align cell text to the left */
+}
+
+/* Alternate row background color 
+
+.table tbody tr:nth-child(even) {
+  background-color: #f8f9fa; /* Alternate row background color */
+}*/
+
+/* Hover effect for table rows */
+.table tbody tr:hover {
+  background-color: #e9ecef; /* Hover background color */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+a {
+  color: #00B7FF; /* Link color */
+}
+
+#addRunBtn {
+  display: block; /* Make the button a block-level element */
+  margin: 0 auto; /* Center the button horizontally */
+}
+
+.header-container {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Vertically center items */
+}
+
+.total-runs {
+  margin-right: 10px; /* Add right margin to create space between items */
+}
+
+.highlight-row {
+  background-color: rgba(255, 255, 0, 0.805);
+}
+
+.footer-link {
+  color: #007bff; /* Blue color, you can change it to suit your design */
+  text-decoration: none; /* Removes default underline */
+}
+
+.footer-link:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+@media (max-width: 1000px) {
+  /* Ensure the container doesn't exceed 1000px width */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto; /* Center the container horizontally */
+  }
+
+  /* Style the "Add Run Number" button */
+  #addRunBtn {
+    display: block; /* Make the button a block-level element */
+    margin: 20px auto; /* Center the button horizontally with some top margin */
+    padding: 10px 20px; /* Add padding to the button */
+    background-color: #007bff; /* Primary button background color */
+    color: #fff; /* Button text color */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Add border radius */
+    cursor: pointer; /* Show pointer cursor on hover */
+  }
+
+  /* Hide the original table header on small screens */
+  .table thead {
+    display: none;
+  }
+
+  /* Convert table elements to block-level for better display */
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Style table rows */
+  /*
+  .table tr {
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+  }
+  */
+
+  /* Style table cells */
+  .table td {
+    text-align: left;
+    padding: 10px; /* Add padding to table cells */
+  }
+
+  /* Style the content before each table cell */
+  .table td:before {
+    content: attr(data-label); /* Use the th value as the content for td:before */
+    font-weight: bold;
+    float: left;
+    text-transform: uppercase;
+    margin-right: 10px; /* Add right margin for better spacing */
+    color: #007bff; /* Color for content before table cell */
+  }
+
+  /* Display column headers */
+  .table th {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+}

@@ -1,0 +1,673 @@
+extends layout
+
+block content
+    .container
+        input#runsData(type="hidden", value=JSON.stringify(runs))
+        
+        .header-container
+            h4.total-runs Total Runs: #{totalRuns + 1}
+            button.btn.btn-primary#addRunBtn(type="button", data-bs-toggle="modal", data-bs-target="#addRunModal") Add Run Number
+            div.form-group
+                label(for="searchinput") Search:
+                div.input-group
+                    input#searchinput.form-control(type="text", placeholder="Search runs")
+                    div.input-group-append
+                        button#searchButton.btn.btn-primary(type="button") Search
+
+        // Modal for adding a new run number
+        .modal.fade#addRunModal(tabindex="-1", role="dialog", aria-labelledby="addRunModalLabel", aria-hidden="true")
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h5.modal-title#addRunModalLabel Add Run Number
+                        button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                    .modal-body
+                        form
+                            .form-group
+                                label(for="sct") SCT:
+                                select#sct.form-control
+                                    option(value="No") No
+                                    option(value="Yes") Yes
+                            .form-group
+                                label(for="pai") PAI:
+                                select#pai.form-control
+                                    option(value="No") No
+                                    option(value="Yes") Yes
+                            .form-group
+                                label(for="runNumber") Run Number:
+                                input#runNumber.form-control(type="text")
+                            .form-group 
+                                label(for="date") Date:
+                                input#date.form-control(type="date", placeholder="YYYY-MM-DD", required)
+                            .form-group
+                                label(for="patientName") Patient Name:
+                                input#patientName.form-control(type="text", required)
+                            .form-group
+                                label(for="emt") EMT:
+                                input#emt.form-control(type="text", required)
+                            .form-group
+                                label(for="medic") Medic:
+                                input#medic.form-control(type="text", required)
+                            .form-group
+                                label(for="unit") Unit:
+                                select#unit.form-control
+                                    option(value="7222") 7222
+                                    option(value="7223") 7223
+                                    option(value="7224") 7224
+                                    option(value="7225") 7225
+                                    option(value="7226") 7226
+                            .form-group
+                                label(for="location") Location:
+                                input#location.form-control(type="text", required)
+                            .form-group
+                                label(for="destination") Destination:
+                                input#destination.form-control(type="text", required)
+                            .form-group
+                                label(for="notes") Notes:
+                                input#notes.form-control(type="text")
+                    .modal-footer
+                        button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Close
+                        button.btn.btn-primary#saveRunBtn(type="button") Save
+
+        // Modal for editing a run number
+        .modal.fade#editRunModal(tabindex="-1", role="dialog", aria-labelledby="editRunModalLabel", aria-hidden="true")
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h5.modal-title#editRunModalLabel Edit Run Number
+                        button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                    .modal-body
+                        form
+                            input#editRunId(type="hidden")
+                            .form-group
+                                label(for="sctEdit") SCT:
+                                select#sctEdit.form-control
+                                    option(value="No") No
+                                    option(value="Yes") Yes
+                            .form-group
+                                label(for="paiEdit") PAI:
+                                select#paiEdit.form-control
+                                    option(value="No") No
+                                    option(value="Yes") Yes
+                            .form-group
+                                label(for="runNumberEdit") Run Number:
+                                input#runNumberEdit.form-control(type="text")
+                            .form-group 
+                                label(for="dateEdit") Date:
+                                input#dateEdit.form-control(type="text", required)
+                            .form-group
+                                label(for="patientNameEdit") Patient Name:
+                                input#patientNameEdit.form-control(type="text" required)
+                            .form-group
+                                label(for="emtEdit") EMT:
+                                input#emtEdit.form-control(type="text" required)
+                            .form-group
+                                label(for="medicEdit") Medic:
+                                input#medicEdit.form-control(type="text" required)
+                            .form-group
+                                label(for="unitEdit") Unit:
+                                select#unitEdit.form-control
+                                    option(value="7222") 7222
+                                    option(value="7223") 7223
+                                    option(value="7224") 7224
+                                    option(value="7225") 7225
+                                    option(value="7226") 7226
+                            .form-group
+                                label(for="locationEdit") Location:
+                                input#locationEdit.form-control(type="text" required)
+                            .form-group
+                                label(for="destinationEdit") Destination:
+                                input#destinationEdit.form-control(type="text" required)
+                            .form-group
+                                label(for="notesEdit") Notes:
+                                input#notesEdit.form-control(type="text")
+                    .modal-footer
+                        button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Close
+                        button.btn.btn-primary#updateRunBtn(type="button") Update
+
+        table.table.table-striped#runsTable
+            thead
+                tr
+                    th SCT
+                    th PAI
+                    th Run Number
+                    th Date
+                    th Patient Name 
+                    th EMT 
+                    th Medic 
+                    th Unit
+                    th Location 
+                    th Destination 
+                    th Notes
+                    th Actions
+            tbody#runsTableBody
+                each run in runs
+                    tr(class=(run.sct === 'Yes' || run.pai === 'Yes') ? 'table-info' : '')
+                        td(data-label="SCT:")= run.sct
+                        td(data-label="PAI:")= run.pai
+                        td(data-label="Run Number:")= run.runNumber
+                        td(data-label="Date:")= run.date
+                        td(data-label="Patient Name:")= run.patientName
+                        td(data-label="EMT:")= run.emt
+                        td(data-label="Medic:")= run.medic
+                        td(data-label="Unit:")= run.unit
+                        td(data-label="Location:")= run.location
+                        td(data-label="Destination:")= run.destination
+                        td(data-label="Notes:")= run.notes ? run.notes : 'N/A'
+                        td
+                            button.btn.btn-primary.edit-button(type='button', data-run-number=run.runNumber) Edit
+                            if isAdmin
+                                button.btn.btn-danger.delete-button(type='button', data-run-number=run.runNumber) Delete
+            // Pagination controls
+        nav
+                ul.pagination
+                    li.page-item(class=(currentPage === 1) ? 'disabled' : '')
+                        a.page-link(href=`/list?page=${currentPage - 1}&perPage=${perPage}`) Previous
+                    each page in Array.from({ length: totalPages }, (_, i) => i + 1)
+                        li.page-item(class=(currentPage === page) ? 'active' : '')
+                            a.page-link(href=`/list?page=${page}&perPage=${perPage}`)= page
+                    li.page-item(class=(currentPage === totalPages) ? 'disabled' : '')
+                        a.page-link(href=`/list?page=${currentPage + 1}&perPage=${perPage}`) Next
+        div.form-group
+            label(for="perPageSelect") Rows per Page:
+            select#perPageSelect.form-control
+                option(value="25") 25
+                option(value="50") 50
+                option(value="75") 75
+                option(value="100") 100
+
+            if isAdmin
+                h3 Export Runs
+                div.form-group
+                    label(for="startDateExport") Start Date:
+                    input#startDateExport.form-control(type="date", required)
+                div.form-group
+                    label(for="endDateExport") End Date:
+                    input#endDateExport.form-control(type="date", required)
+                div.form-group
+                    label(for="patientNameExport") Patient Name:
+                    input#patientNameExport.form-control(type="text")
+                div.form-group
+                    label(for="emtExport") EMT:
+                    input#emtExport.form-control(type="text")
+                div.form-group
+                    label(for="medicExport") Medic:
+                    input#medicExport.form-control(type="text")
+                div.form-group
+                    label(for="unitExport") Unit:
+                    input#unitExport.form-control(type="text")
+                div.form-group
+                    button.btn.btn-success.btn-export Export to CSV
+        
+
+    // Script
+    script.
+        $(document).ready(function(){
+            
+        var allRuns = []; // Variable to store all runs
+
+            // Function to retrieve all runs from the server
+        async function getAllRuns() {
+                try {
+                    const response = await fetch('/runs/all');
+                    const data = await response.json();
+                    allRuns = data.runs;
+                } catch (error) {
+                    console.error('Error fetching runs:', error);
+                }
+        }
+
+            // Call the function to retrieve all runs when the page loads
+        getAllRuns();
+
+        // Check if the .btn-export button exists
+        const exportButton = document.querySelector('.btn-export');
+
+        if (exportButton) {
+                exportButton.addEventListener('click', function () {
+                    // Retrieve values of required parameters
+                    const startDate = document.getElementById('startDateExport').value;
+                    const endDate = document.getElementById('endDateExport').value;
+
+                    // Initialize an empty object to store optional parameters
+                    const optionalParams = {};
+
+                    // Retrieve values of optional parameters and add them to the object
+                    const patientName = document.getElementById('patientNameExport').value;
+                    if (patientName.trim() !== '') {
+                        optionalParams.patientName = patientName.trim();
+                    }
+
+                    const emt = document.getElementById('emtExport').value;
+                    if (emt.trim() !== '') {
+                        optionalParams.emt = emt.trim();
+                    }
+
+                    const medic = document.getElementById('medicExport').value;
+                    if (medic.trim() !== '') {
+                        optionalParams.medic = medic.trim();
+                    }
+
+                    const unit = document.getElementById('unitExport').value;
+                    if (unit.trim() !== '' && unit.trim() !== 'None') {
+                        optionalParams.unit = unit.trim();
+                    }
+
+                    // Construct URL with optional parameters
+                    let url = `/runs/export?startDate=${startDate}&endDate=${endDate}`;
+
+                    // Append optional parameters to the URL
+                    for (const key in optionalParams) {
+                        url += `&${key}=${encodeURIComponent(optionalParams[key])}`;
+                    }
+
+                    // Make an AJAX request to the server-side route handler
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', url, true);
+                    xhr.responseType = 'blob'; // Set response type to blob
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            // Create a blob URL for the CSV file
+                            const blob = new Blob([xhr.response], { type: 'text/csv' });
+                            const csvFilename = 'exported_data.csv';
+
+                            // Create a link element to trigger the download
+                            const link = document.createElement('a');
+                            link.href = window.URL.createObjectURL(blob);
+                            link.setAttribute('download', csvFilename);
+
+                            // Append the link to the body and trigger the download
+                            document.body.appendChild(link);
+                            link.click();
+
+                            // Cleanup: remove the link and revoke the blob URL
+                            document.body.removeChild(link);
+                            window.URL.revokeObjectURL(link.href);
+                        }
+                    };
+                    xhr.send();
+                });
+            } else {
+                // No permissions for this.
+            }
+
+            var runs = JSON.parse($('#runsData').val());
+
+            // Function to handle change event of perPage dropdown
+            $('#perPageSelect').change(function() {
+                var perPage = $(this).val(); // Get the selected value
+                window.location.href = '/list?perPage=' + perPage; // Redirect to the updated URL with perPage query parameter
+            });
+
+            // Set the selected value of the perPage dropdown based on the query parameter in the URL
+            var perPageParam = new URLSearchParams(window.location.search).get('perPage');
+            $('#perPageSelect').val(perPageParam);
+
+            $('.delete-button').click(function() {
+                var runNumber = $(this).data('run-number');
+                
+                // Ask for confirmation before proceeding with deletion
+                var confirmation = confirm("Are you sure you want to delete this?");
+                
+                if (confirmation) {
+                    // Send AJAX POST request to delete the run number
+                    $.ajax({
+                        type: 'POST',
+                        url: '/runs/delete',
+                        data: { runNumber: runNumber },
+                        success: function(response) {
+                            console.log(response); // Log the response for debugging
+                            // Remove the row from the table upon successful deletion
+                            $(this).closest('tr').remove();
+                            window.location.href = '/list'; // Reload the page to update the runs array
+                        }.bind(this), // Bind 'this' to the success callback function
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText); // Log any errors for debugging
+                            // Handle error if needed
+                        }
+                    });
+                }
+            });
+
+            /* Function to calculate the next run number
+            function calculateNextRunNumber() {
+                var currentDate = new Date();
+                var currentYear = currentDate.getFullYear().toString().substr(-2); // Get last two digits of the year
+                var nextRunNumber = "FR" + currentYear + "00001"; // Initial run number for the year
+
+                // Check if the runs array is not empty
+                if (runs.length > 0) {
+                    // Get the last run number from the runs array
+                    var lastRunNumber = runs[runs.length - 1].runNumber;
+
+                    // Extract the year from the last run number
+                    var lastRunYear = lastRunNumber.substring(2, 4);
+
+                    // Check if the last run number is from the current year
+                    if (lastRunYear === currentYear) {
+                        // Increment the run number by 1
+                        var lastRunNumberDigits = parseInt(lastRunNumber.substring(4));
+                        nextRunNumber = "FR" + currentYear + ("00000" + (lastRunNumberDigits + 1)).slice(-5);
+                    }
+                }
+
+                // Append "-sct" to the run number if SCT is set to "Yes"
+                // if (sct === "Yes") {
+                //    nextRunNumber += "-SCT";
+                //}
+
+                return nextRunNumber;
+            }*/
+            
+            /*
+            function calculateNextRunNumber() {
+                var currentDate = new Date();
+                var currentYear = currentDate.getFullYear().toString().substr(-2); // Get last two digits of the year
+                var nextRunNumber = "FR" + currentYear + "00001"; // Initial run number for the year
+            
+                // Check if the runs array is not empty
+                if (runs.length > 0) {
+                    // Find the highest numeric part of the run number from the runs array
+                    var highestNumericPart = 0;
+            
+                    runs.forEach(function(run) {
+                        var runNumber = run.runNumber;
+                        var year = runNumber.substring(2, 4);
+            
+                        // Check if the run number is from the current year
+                        if (year === currentYear) {
+                            var numericPart = parseInt(runNumber.substring(6)); // Assuming the numeric part starts from the 6th character
+                            if (numericPart > highestNumericPart) {
+                                highestNumericPart = numericPart;
+                            }
+                        }
+                    });
+            
+                    // Increment the highest numeric part by 1
+                    nextRunNumber = "FR" + currentYear + ("00000" + (highestNumericPart + 1)).slice(-5);
+                }
+            
+                return nextRunNumber;
+            }*/
+
+            async function calculateNextRunNumber() {
+                try {
+                    // Fetch the highest run number from the server
+                    const response = await fetch('/runs/highestRunNumber');
+                    const highestRun = await response.json();
+
+                    console.log("Highest run response from server:", highestRun);
+                    console.log("Response from server:", response);
+
+                    let nextRunNumber;
+                    if (highestRun) {
+                        const currentYear = new Date().getFullYear().toString().substr(-2);
+                        // Extract the numeric part from the highest run number
+                        const numericPart = parseInt(highestRun.runNumber.substring(4)); // Extracting the numeric part after "FR" + 2-digit year
+                        console.log("Numeric part:", numericPart);
+
+                        // Increment the numeric part by 1
+                        const nextNumericPart = numericPart + 1;
+                        console.log("Next numeric part:", nextNumericPart);
+
+                        // Pad the numeric part with leading zeros to ensure it's 5 digits long
+                        const paddedNumericPart = String(nextNumericPart).padStart(5, '0');
+
+                        // Construct the next run number
+                        nextRunNumber = `FR${currentYear}${paddedNumericPart}`;
+                        console.log("Next run number:", nextRunNumber);
+                    } else {
+                        // If no run numbers are found, start from 1
+                        const currentYear = new Date().getFullYear().toString().substr(-2);
+                        nextRunNumber = `FR${currentYear}00001`;
+                    }
+
+                    console.log("Returning next run number:", nextRunNumber);
+                    return nextRunNumber;
+                } catch (error) {
+                    console.error('Error calculating next run number:', error);
+                    throw error;
+                }
+            }
+
+
+            /* Old Function to update the run number input field in the modal
+            function updateRunNumberInput() {
+                //var sct = $('#sct').val();
+                //var sct = "No";
+                $('#runNumber').val(calculateNextRunNumber()); // Set the value of #runNumber input field
+            }*/
+
+            async function updateRunNumberInput() {
+                try {
+                    // Calculate the next run number
+                    const nextRunNumber = await calculateNextRunNumber();
+
+                    if($('#sct').val() === "Yes") {
+                        $('#runNumber').val(nextRunNumber + "SCT");
+                    } else {
+                        $('#runNumber').val(nextRunNumber);
+                    }
+                } catch (error) {
+                    console.error('Error updating run number input:', error);
+                }
+            }
+            
+            // Call the updateRunNumberInput function when the modal is shown
+            $('#addRunModal').on('shown.bs.modal', function (e) {
+                updateRunNumberInput(); // Update the run number input field
+            });
+
+            // Event listener for SCT select change event
+            $('#sct').change(function() {
+                updateRunNumberInput(); // Update the run number input field when SCT selection changes
+            });
+
+            // Event listener for Edit button click
+            $('.edit-button').click(function() {
+                // Get the run number of the run to be edited
+                var runId = $(this).closest('tr').find('td:eq(2)').text(); // Adjust index if needed
+
+                // Find the run object from the runs array using the runNumber
+                var run = runs.find(r => r.runNumber === runId);
+                
+                // Check if the run object is found
+                if (run) {
+                    // Prefill the modal input fields with the values from the run object
+                    $('#editRunId').val(run._id);
+                    $('#sctEdit').val(run.sct);
+                    $('#paiEdit').val(run.pai);
+                    $('#runNumberEdit').val(run.runNumber);
+                    $('#dateEdit').val(run.date);
+                    $('#patientNameEdit').val(run.patientName);
+                    $('#emtEdit').val(run.emt);
+                    $('#medicEdit').val(run.medic);
+                    $('#unitEdit').val(run.unit);
+                    $('#locationEdit').val(run.location);
+                    $('#destinationEdit').val(run.destination);
+                    $('#notesEdit').val(run.notes);
+                    
+                    // Show the edit run modal
+                    $('#editRunModal').modal('show');
+                } else {
+                    // Handle case where run is not found
+                    console.error('Run not found');
+                    // You may want to display an error message or handle this case in another way
+                }
+            });
+
+            // Event listener for save button click
+            $('#saveRunBtn').click(function() {
+                var sct = $('#sct').val();
+                var pai = $('#pai').val();
+                var runNumber = $('#runNumber').val();
+                var date = $('#date').val();
+                var patientName = $('#patientName').val();
+                var emt = $('#emt').val();
+                var medic = $('#medic').val();
+                var unit = $('#unit').val();
+                var location = $('#location').val();
+                var destination = $('#destination').val();
+                var notes = $('#notes').val();
+                
+                // Send AJAX POST request to save the data
+                $.ajax({
+                    type: 'POST',
+                    url: '/runs/add',
+                    data: {
+                        sct: sct,
+                        pai: pai,
+                        runNumber: runNumber,
+                        date: date,
+                        patientName: patientName,
+                        emt: emt,
+                        medic: medic,
+                        unit: unit,
+                        location: location,
+                        destination: destination,
+                        notes: notes
+                    },
+                    success: function(response) {
+                        console.log(response); // Log the response for debugging
+                        // Add the new row to the table upon successful save
+                        var newRow = $('<tr>').append(
+                            $('<td>').text(sct),
+                            $('<td>').text(pai),
+                            $('<td>').text(runNumber),
+                            $('<td>').text(date),
+                            $('<td>').text(patientName),
+                            $('<td>').text(emt),
+                            $('<td>').text(medic),
+                            $('<td>').text(unit),
+                            $('<td>').text(location),
+                            $('<td>').text(destination),
+                            $('<td>').text(notes),
+                            $('<td>').append(
+                                $('<a>').addClass('btn btn-primary').attr('href', '#').text('Edit'),
+                                ' ',
+                                $('<a>').addClass('btn btn-danger').attr('href', '#').text('Delete')
+                            )
+                        );
+                        
+                        $('#runsTable tbody').append(newRow); // Append new row to the table
+                        $('#addRunModal').modal('hide'); // Hide the modal after adding the row
+                        window.location.href = '/list'; // Reload the page to update the runs array
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Log any errors for debugging
+                        // Handle error if needed
+                    }
+                });
+            });
+
+            // Event listener for update button click
+            $('#updateRunBtn').click(function() {
+                var runId = $('#editRunId').val();
+                var sct = $('#sctEdit').val();
+                var pai = $('#paiEdit').val();
+                var runNumber = $('#runNumberEdit').val();
+                var date = $('#dateEdit').val();
+                var patientName = $('#patientNameEdit').val();
+                var emt = $('#emtEdit').val();
+                var medic = $('#medicEdit').val();
+                var unit = $('#unitEdit').val();
+                var location = $('#locationEdit').val();
+                var destination = $('#destinationEdit').val();
+                var notes = $('#notesEdit').val();
+                
+                // Send AJAX POST request to update the run data
+                $.ajax({
+                    type: 'POST',
+                    url: '/runs/update/' + runNumber,
+                    data: {
+                        sct: sct,
+                        pai: pai,
+                        runNumber: runNumber,
+                        date: date,
+                        patientName: patientName,
+                        emt: emt,
+                        medic: medic,
+                        unit: unit,
+                        location: location,
+                        destination: destination,
+                        notes: notes
+                    },
+                    success: function(response) {
+                        console.log(response); // Log the response for debugging
+                        // Update the corresponding row in the table upon successful update
+                        var editedRow = $('<tr>').append(
+                            $('<td>').text(sct),
+                            $('<td>').text(pai),
+                            $('<td>').text(runNumber),
+                            $('<td>').text(date),
+                            $('<td>').text(patientName),
+                            $('<td>').text(emt),
+                            $('<td>').text(medic),
+                            $('<td>').text(unit),
+                            $('<td>').text(location),
+                            $('<td>').text(destination),
+                            $('<td>').text(notes),
+                            $('<td>').append(
+                                $('<a>').addClass('btn btn-primary').attr('href', '#').text('Edit')
+                            )
+                        );
+                        // Replace the existing row with the updated row in the table
+                        $('#runsTable tbody tr').eq(runId).replaceWith(editedRow);
+                        $('#editRunModal').modal('hide'); // Hide the modal after updating the row
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Log any errors for debugging
+                        // Handle error if needed
+                    }
+                });
+            });
+
+        // Event listener for the search button click
+            $('#searchButton').click(function() {
+                // Retrieve the search query from the input field
+                var searchQuery = $('#searchinput').val().toLowerCase();
+
+                // Filter all runs based on the search query
+                var filteredRuns = allRuns.filter(function(run) {
+                    // Check if any of the run properties contain the search query
+                    for (var key in run) {
+                        if (run[key] && typeof run[key] === 'string' && run[key].toLowerCase().includes(searchQuery)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+
+                // Display only the filtered runs
+                displayRuns(filteredRuns);
+            });
+
+            // Function to display the runs
+            function displayRuns(runs) {
+                // Clear the existing table rows
+                $('#runsTable tbody').empty();
+
+                // Add each filtered run as a row in the table
+                runs.forEach(function(run) {
+                    var row = $('<tr>').append(
+                        $('<td>').text(run.sct),
+                        $('<td>').text(run.pai),
+                        $('<td>').text(run.runNumber),
+                        $('<td>').text(run.date),
+                        $('<td>').text(run.patientName),
+                        $('<td>').text(run.emt),
+                        $('<td>').text(run.medic),
+                        $('<td>').text(run.unit),
+                        $('<td>').text(run.location),
+                        $('<td>').text(run.destination),
+                        $('<td>').text(run.notes ? run.notes : 'N/A'),
+                        $('<td>').append(
+                            $('<button>').addClass('btn btn-primary edit-button').attr('data-run-number', run.runNumber).text('Edit'),
+                            ' ',
+                            $('<button>').addClass('btn btn-danger delete-button').attr('data-run-number', run.runNumber).text('Delete')
+                        )
+                    );
+                    $('#runsTable tbody').append(row);
+                });
+            }
+        });

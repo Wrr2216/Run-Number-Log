@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  link(rel='stylesheet', href='/stylesheets/stats.css')
+
+  // Table for Top 5 Overall
+  h2 Top 10 Medic/EMT by Run Volume 
+  table
+    thead
+      tr
+        th Medic/EMT
+        th Run Count
+    tbody
+      each emp in top5Employees
+        tr
+          td= emp.name || 'N/A'
+          td= emp.runCount || 'N/A'
+
+  // Top 5 cerws
+  h2 Top 5 Crews by Run Volume
+  table
+    thead
+      tr
+        th Run Number
+        th Run Count
+    tbody
+      each run in top5Crews
+        tr
+          td= run.dataValues.emt + ' / ' + run.dataValues.medic || 'N/A'
+          td= run.dataValues.runCount || run.runCount || 'N/A'
+
+  // Table for Unit with the Most Runs
+  h2 Unit with the Most Runs
+  table
+    thead
+      tr
+        th Unit
+        th Run Count
+    tbody
+      each unit in topUnits
+        tr
+          td= unit.dataValues.unit || 'N/A'
+          td= unit.dataValues.runCount || unit.runCount || 'N/A'
+
+  // Table for Most Transported Destination
+  h2 Most Transported to Destination
+  table
+    thead
+      tr
+        th Destination
+        th Run Count
+    tbody
+      each dest in topDest
+        tr
+          td= dest.dataValues.destination || 'N/A'
+          td= dest.dataValues.runCount || dest.runCount || 'N/A'

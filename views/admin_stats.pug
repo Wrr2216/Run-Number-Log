@@ -1,0 +1,64 @@
+extends layout
+
+block content
+    link(rel='stylesheet', href='/stylesheets/stats.css')
+
+    h2 All Destinations (Transported To)
+    table
+      thead
+        tr
+          th Destination
+          th Count
+      tbody
+        each dest in allDestinations
+          tr
+            td= dest.destination || 'N/A'
+            td= dest.dataValues.count || 'N/A'
+
+    h2 All Locations (Scene of Incident)
+    table
+      thead
+        tr
+          th Location
+          th Count
+      tbody
+        each loc in allLocations
+          tr
+            td= loc.location || 'N/A'
+            td= loc.dataValues.count || 'N/A'
+
+    h2 All Units
+    table
+      thead
+        tr
+          th Unit
+          th Runs
+      tbody
+        each unit in allUnits
+          tr
+            td= unit.unit || 'N/A'
+            td= unit.dataValues.runCount || 'N/A'
+
+    h2 All EMTs
+    table
+      thead
+        tr
+          th EMT
+          th Runs
+      tbody
+        each emt in allEmts
+          tr
+            td= emt.dataValues.emt || 'N/A'
+            td= emt.dataValues.runCount || 'N/A'
+
+    h2 All Medics
+    table
+      thead
+        tr
+          th Medic
+          th Runs
+      tbody
+        each medic in allMedics
+          tr
+            td= medic.dataValues.medic || 'N/A'
+            td= medic.dataValues.runCount || 'N/A'

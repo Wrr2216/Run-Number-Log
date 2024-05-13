@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) 2024 Logan Miller
+ * All rights reserved.
+ *
+ * This code is the property of Miller Cyber Technologies LLC.
+ * Unauthorized use or distribution of this code is strictly prohibited.
+ */
+
+ /* Main Styling */
+
+body {
+    background-color: #f8f9fa; /* Set background color */
+    font-family: Arial, sans-serif; /* Set font family */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .login-container {
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .login-content {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+  }
+  
+  .login-form {
+    text-align: center;
+  }
+  
+  .card {
+    border: none;
+  }
+  
+  .card-body {
+    padding: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .btn-block {
+    width: 100%;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .login-content {
+      padding: 20px;
+    }
+  }
+  
